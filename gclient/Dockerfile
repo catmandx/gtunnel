@@ -15,6 +15,9 @@ RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest && \
     unzip protoc-3.11.4-linux-x86_64.zip -d /protoc && \
     go install github.com/golang/protobuf/protoc-gen-go@latest && \
     rm protoc-3.11.4-linux-x86_64.zip
+    
+# Install garble
+RUN go install mvdan.cc/garble@latest
 
 # Copy over all gtunnel files and directories
 COPY go.mod .
@@ -30,5 +33,5 @@ RUN go get -d -v ./... && go install -v ./...
 
 # Build client builder
 RUN mkdir /output
-RUN go build -o gclient/gclient_build gclient/builder/gclient_build.go
+RUN garble build -o gclient/gclient_build gclient/builder/gclient_build.go
 ENTRYPOINT ["gclient/gclient_build"]
